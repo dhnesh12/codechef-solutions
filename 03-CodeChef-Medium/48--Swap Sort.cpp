@@ -1,0 +1,79 @@
+#include <bits/stdc++.h>
+#define ll          long long
+#define pb          push_back
+#define pii         pair<int,int>
+#define vi          vector<int>
+#define vii         vector<pii>
+#define mi          map<int,int>
+#define mii         map<pii,int>
+#define all(a)      (a).begin(),(a).end()
+#define x           first
+#define y           second
+#define sz(x)       (int)x.size()
+#define endl        '\n'
+#define hell        1000000007
+#define rep(i,a,b)  for(int i=a;i<b;i++)
+using namespace std;
+int n,x,a[100005],pos[100005];
+vii ps;
+void swapp(int w,int e){
+    // cout<<w<<" "<<e<<endl;
+    ps.pb({w,e});
+    swap(a[w],a[e]);
+    pos[a[w]]=w;
+    pos[a[e]]=e;
+}
+void solve(){
+    ps.clear();
+    cin>>n>>x;
+    rep(i,1,n+1){
+        cin>>a[i];
+        pos[a[i]]=i;
+    }
+    int cur=1;
+    rep(i,1,n+1){
+        if(i==x) continue;
+        if(pos[x]!=cur){
+            if((pos[x]-cur)%2) swapp(pos[x],cur);
+            else{
+                swapp(pos[x],pos[x]-1);
+                swapp(pos[x],cur);
+            }
+        }
+        if((pos[i]-cur)%2) swapp(pos[i],cur);
+        else{
+            swapp(pos[x],pos[x]+1);
+            swapp(pos[x],pos[i]);
+            if(pos[i]+2>n) break;
+            swapp(pos[x],pos[i]+2);
+            swapp(pos[x],pos[i]-1);
+            swapp(pos[x],pos[x]+1);
+        }
+        cur++;
+    }
+    while(pos[x]-1>0 and a[pos[x]-1]>x) swapp(pos[x],pos[x]-1);
+    rep(i,1,n+1){
+        if(a[i]!=i){
+            cout<<"NO"<<endl;
+            return;
+        }
+    }
+    cout<<"YES"<<endl;
+    cout<<sz(ps)<<endl;
+    rep(i,0,ps.size())
+    {
+        cout<<ps[i].first<<' '<<ps[i].second<<endl;
+    }
+}
+ 
+signed main(){
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    int t=1;
+    cin>>t;
+    while(t--){
+        solve();
+    }
+    return 0;
+}
